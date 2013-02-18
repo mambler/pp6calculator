@@ -1,6 +1,6 @@
 pp6calculator - A simple command line calculator
 ================================================
-this is the README for the pp6calculator project.
+This is the README for the pp6calculator project.
 
 Authors
 -------
@@ -9,3 +9,6 @@ Authors
 License
 -------
 pp6calculator is distributed under the terms of the Boost Software License.
+
+Installation
+============
