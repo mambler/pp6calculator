@@ -10,6 +10,7 @@ using namespace std;
 double get_input(string);
 void quadratic_solver(double&,double&,double&,double&,double&,int&);
 void three_vector(double&,double&,double&);
+void spacetime_vector(double&,double&,double&,double&);
 void line_intercept(double&,double&);
 void multiplication(double&,double&);
 void addition(double&,double&);
@@ -27,7 +28,7 @@ int main()
 	// Check what operator has been entered
 	while(quit==0){
 		cout << "Calculate: '+' '-' '*' '/'\n1: Quadratic Solver\n\
-2: Length of Three Vector\n3: Straight Line x-axis intercept" << endl << endl;
+2: Length of Three Vector\n3: Straight Line x-axis intercept\n4: Spacetime length calcuation" << endl << endl;
 		cin >> operation;
 		if(operation == '+'){
 			addition(a,b);
@@ -37,23 +38,25 @@ int main()
 			division(a,b);
 		} else if(operation == '-') {
 			subtraction(a,b);
-		} else if(operation == '2'){
-			three_vector(a,b,c);
-		} else if(operation == '3'){
-			line_intercept(a,b);
-		} else if(operation == 'q') {
-			quit=1;
 		} else if(operation == '1') {
 			quadratic_solver(a,b,c,real_part,imag_part,discrim);
 			if(discrim==1){
 				cout << "Positive root = " << real_part << endl;
-				cout << "Negative root = " << imag_part << endl;
+				cout << "Negative root = " << imag_part << endl << endl;
 			} else if(discrim==0){
-				cout << "Repeated root = " << real_part << endl;
+				cout << "Repeated root = " << real_part << endl << endl;
 			} else if(discrim==-1){
 				cout << "Complex root = " << real_part << "+" << imag_part << "i" << endl;
-				cout << "Complex root = " << real_part << "-" << imag_part << "i" << endl;
+				cout << "Complex root = " << real_part << "-" << imag_part << "i" << endl << endl;
 			}
+		} else if(operation == '2'){
+			three_vector(a,b,c);
+		} else if(operation == '3'){
+			line_intercept(a,b);
+		} else if(operation == '4'){
+			spacetime_vector(a,b,c,d);
+		} else if(operation == 'q') {
+			quit=1;
 		} else {
 			// Error check on operator command
 			cout << "Error 1\n";
@@ -142,6 +145,37 @@ void three_vector(double &a,double &b,double &c)
 	
 	return;
 }	
+
+// Calculate the length of the spacetime vector given the Minkowski signature (+,-,-,-)
+void spacetime_vector(double&a,double&b,double&c,double&d)
+{
+	double dt,dr;
+	
+	cout << "Compute: ds^2 = (c*dt)^2 - dr^2" << endl;
+	cout << "N.B: c=1" << endl << endl;
+	
+	//Take inputs
+	a = get_input("dt");
+	b = get_input("dx");
+	c = get_input("dy");
+	d = get_input("dz");
+	
+	dt = a*a;
+	dr = b*b+c*c+d*d;
+	
+	//Calculate the length of the spacetime vector and output to screen
+	cout << "ds^2 = " << dt-dr << endl;
+	//Causality statement
+	if(dt>dr){
+		cout << "Time-like events" << endl << endl; 
+	} else if(dt==dr){
+		cout << "Light-like events" << endl << endl;
+	} else if(dt<dr){
+		cout << "Space-like events" << endl << endl;
+	}
+	
+	return;
+}
 
 // Calculate the intercept of a straight line in 2D across the x-axis
 void line_intercept(double &a, double &b)
