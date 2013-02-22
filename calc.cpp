@@ -5,30 +5,35 @@
 #include<string.h>
 #include<math.h>
 
+//Use namespace std for convenience rather than scoping everything
 using namespace std;
 
+//Function Prototypes
 double get_input(string);
 void quadratic_solver(double&,double&,double&,double&,double&,int&);
 void three_vector(double&,double&,double&);
 void spacetime_vector(double&,double&,double&,double&);
+void invariant_mass(double&,double&,double&,double&);
 void line_intercept(double&,double&);
 void multiplication(double&,double&);
 void addition(double&,double&);
 void subtraction(double&,double&);
 void division(double&,double&);
 
+//Main routine
 int main()
 {
-	double a,b,c,d;
-	double real_part,imag_part;
-	int discrim; 				//discriminant value
-	int quit=0;
-	char operation;
+	double a,b,c,d;             //Commonly used variables passed to various different functions by reference for speed
+	double real_part,imag_part; //Returned real part and imaginary part for complex roots and positive/negative roots in quadrativc solver
+	int discrim; 				 //discriminant type in quadratic solver
+	int quit=0;					 //Quit logic
+	char operation;				 //Main menu input character
 	
-	// Check what operator has been entered
+	// Check what operator has been entered while not quitting the program
 	while(quit==0){
 		cout << "Calculate: '+' '-' '*' '/'\n1: Quadratic Solver\n\
-2: Length of Three Vector\n3: Straight Line x-axis intercept\n4: Spacetime length calcuation" << endl << endl;
+2: Length of Three Vector\n3: Straight Line x-axis intercept\n4: Spacetime length calcuation\
+\n5: Invariant mass calculation\nq: Quit Calculator" << endl << endl;
 		cin >> operation;
 		if(operation == '+'){
 			addition(a,b);
@@ -55,11 +60,13 @@ int main()
 			line_intercept(a,b);
 		} else if(operation == '4'){
 			spacetime_vector(a,b,c,d);
+		} else if(operation == '5'){
+			invariant_mass(a,b,c,d);
 		} else if(operation == 'q') {
 			quit=1;
 		} else {
 			// Error check on operator command
-			cout << "Error 1\n";
+			cout << "Error: Invalid input\n" << endl;
 			cin.clear();
 			cin.ignore();
 		}
@@ -122,6 +129,9 @@ void division(double &a,double &b)
 	a =	get_input("a");
 	do{
 		b = get_input("b");
+		if(b==0){
+			cout << "Error: Cannot divide by zero!" << endl;
+		}
 	}while(b==0);
 	
 	//Compute the division and output to screen
@@ -177,6 +187,36 @@ void spacetime_vector(double&a,double&b,double&c,double&d)
 	return;
 }
 
+// Calculate the invarient mass
+void invariant_mass(double&a,double&b,double&c,double&d)
+{
+	double m0;
+	
+	cout << "Compute: m0 = sqrt(E^2-(pc)^2)/c\nN.B: c=1" << endl << endl;
+	
+	//Do not allow the mass to be negative
+	do{
+		//Take inputs
+		a = get_input("E");
+		b = get_input("px");
+		c = get_input("py");
+		d = get_input("pz");
+	
+		//Coupute invariant mass squared
+		m0 = a*a-b*b-c*c-d*d;
+		
+		if(m0<0){
+			cout << "Error: Mass cannot be negative!" << endl << endl;
+		}		
+	//perform negative mass check
+	}while(m0<0);
+	
+	//Compute invariant mass and output to screen
+	cout << "m0 = " << sqrt(m0) << endl << endl;	
+	
+	return;
+}
+
 // Calculate the intercept of a straight line in 2D across the x-axis
 void line_intercept(double &a, double &b)
 {
@@ -185,6 +225,9 @@ void line_intercept(double &a, double &b)
 	//Take inputs and do not allow a=0 otherwise will divide by zero
 	do{
 		a = get_input("m");
+		if(a==0){
+			cout << "Error: m cannot be zero!" << endl;
+		}
 	}while(a==0);
 	b = get_input("c");
 	
@@ -203,10 +246,15 @@ void line_intercept(double &a, double &b)
 void quadratic_solver(double&a,double&b,double&c,double&real_part,double&imag_part,int&discrim)
 {
 	double discriminant;
+	
+	cout << "Compute: x = (-b (+/-) sqrt(b^2 - 4ac)) / 2a" << endl << endl;
 		
 	//do not allow a=0 otherwise will divide by zero
 	do{
 		a = get_input("a");
+		if(a==0){
+			cout << "Error: Cannot divide by zero!" << endl;
+		}
 	}while(a==0);
 	b = get_input("b");
 	c = get_input("c");
@@ -250,9 +298,10 @@ double get_input(string id)
 			//...then clear and empty the input buffer to the last new line
 			cin.clear();
 			cin.ignore(INT_MAX,'\n');
+			cout << "Error: NAN" << endl;
 			error=true;
 		} else {
-			//...else the input is correct and the error tag is negative
+			//...else the input is correct and the error tag is false
 			error=false;
 		}		
 	}while(error==true);
