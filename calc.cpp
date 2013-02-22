@@ -187,7 +187,7 @@ void spacetime_vector(double&a,double&b,double&c,double&d)
 	return;
 }
 
-// Calculate the invarient mass
+// Calculate the invariant mass
 void invariant_mass(double&a,double&b,double&c,double&d)
 {
 	double m0;
