@@ -1,15 +1,18 @@
 #include<stdio.h>
+#include<stdlib.h>
 #include<climits>
 #include<iostream>
 #include<sstream>
 #include<string.h>
 #include<math.h>
+#include<omp.h>
 
 //Use namespace std for convenience rather than scoping everything
 using namespace std;
 
 //Function Prototypes
 double get_input(string);
+void sort_function(int&,int&,int&);
 void quadratic_solver(double&,double&,double&,double&,double&,int&);
 void three_vector(double&,double&,double&);
 void spacetime_vector(double&,double&,double&,double&);
@@ -19,6 +22,8 @@ void multiplication(double&,double&);
 void addition(double&,double&);
 void subtraction(double&,double&);
 void division(double&,double&);
+void bubble();
+//void test_function();
 
 //Main routine
 int main()
@@ -33,7 +38,7 @@ int main()
 	while(quit==0){
 		cout << "Calculate: '+' '-' '*' '/'\n1: Quadratic Solver\n\
 2: Length of Three Vector\n3: Straight Line x-axis intercept\n4: Spacetime length calcuation\
-\n5: Invariant mass calculation\nq: Quit Calculator" << endl << endl;
+\n5: Invariant mass calculation\n6: Input user defined array and bubble sort\nq: Quit Calculator" << endl << endl;
 		cin >> operation;
 		if(operation == '+'){
 			addition(a,b);
@@ -62,6 +67,16 @@ int main()
 			spacetime_vector(a,b,c,d);
 		} else if(operation == '5'){
 			invariant_mass(a,b,c,d);
+	/*	} else if(operation == '6'){
+			//Take inputs before the function call to demonstrate
+			a = get_input("a");
+			b = get_input("b");
+			sort_function(a,b);
+			cout << "a = " << a << " and b = " << b << endl << endl;*/
+		//} else if(operation == 'T'){
+		//	test_function();
+		} else if(operation == '6') {
+			bubble();
 		} else if(operation == 'q') {
 			quit=1;
 		} else {
@@ -72,7 +87,7 @@ int main()
 		}
 	}
 		
-	return 0;
+	exit(EXIT_SUCCESS);
 }
 
 //Perform simple multiplication
@@ -283,6 +298,114 @@ void quadratic_solver(double&a,double&b,double&c,double&real_part,double&imag_pa
 	return ;
 }
 
+//Function to bubble sort a user defined array
+void bubble()
+{
+	int size,element_value,num_swaps,index,scans;
+	cout << "How many integers do you wish to enter? ";
+	size = int(get_input("size"));   // Cast returned input as int from double; user defined size of array
+	cout << endl << endl;
+	int *ptr_array = new int[size]; // Dynamically allocate the size of the array
+	//check if memory allocation has failed
+	if(ptr_array==NULL){ // OR using simple boolean logic "if(!prt_array)" means execute ptr_array==0
+		cout << "Memory allocation has failed in bubble(). Terminating program." << endl << endl;
+		exit(EXIT_FAILURE);  //Terminate program with fail code if memory cannot be allocated
+	}
+	
+	cout << "Enter some values into the array. " << endl;	
+	
+	//Input values into array
+	for(int i=0;i<size;++i){
+		stringstream convert; // stringstream data type called "convert"
+		convert << i;		  // throw i into the string stream "convert"
+		element_value = get_input(convert.str());  //now call object "str()" from string stream on "convert" to convert
+												   // the string stream to a string
+		ptr_array[i]=element_value;				   // value of pointer "ptr_array" at address [i]; being assigned here
+	}
+	
+	cout << "Original array arrangement: " << endl;
+	for(int i=0;i<size;++i){
+		cout << "ptr_array["<<i<<"] = " << ptr_array[i] << endl;
+	}
+	
+	// Now sort the array using a bubble sort algorithm:
+	// 1. Compare two elements of the array
+	// 2. Flip the elements so the largest value is in the lower array index
+	// 3. Move to next elements and repeat until end of array
+	// 4. Keep going through the array until NO flips are made
+	
+	//perform the bubble sort
+	scans=0;
+	do{
+		num_swaps=0;
+		index=0;
+		
+		for(index=0;index<(size-1);++index){
+			sort_function(ptr_array[index],ptr_array[index+1],num_swaps);
+		}	
+		++scans;
+	}while(num_swaps!=0);
+	
+	cout << endl << "Sorted array arrangement: " << endl;
+	for(int i=0;i<size;++i){
+		cout << "ptr_array["<<i<<"] = " << ptr_array[i] << endl;
+	}
+	
+	cout << "Scans = " << scans << endl << endl;
+	
+	//Always always ALWAYS, delete declared memory!!!
+	delete [] ptr_array;
+	
+	return;
+}
+
+// Function to swap two integers only if they are out of order
+void sort_function(int&a,int&b,int&num)
+{
+	//Temp variable
+	double temp;
+	
+	//Check to see if "a" or "b" is bigger and decide whether to swap or not
+	if(b>a){
+		temp = a;
+		a = b;
+		b = temp;
+		++num;
+	}
+	
+	return;
+}
+
+/*void test_function()
+{
+	double a=2,b=8,i;
+	
+	double end_time;	
+	double start_time=omp_get_wtime();
+	
+	for(i=0;i<1000000;i++){
+		double temp;
+		temp=a;
+		a=b;
+		b=temp;				
+	}
+
+	end_time=omp_get_wtime();
+	cout << "For memory allocation: time = " << end_time-start_time << endl;
+	
+	start_time=omp_get_wtime();
+	for(i=0;i<1000000;i++){
+		a=a+b;
+		b=a-b;
+		a=a-b;
+	}
+	
+	end_time=omp_get_wtime();
+	cout << "For algebra solution: time = " << end_time-start_time << endl << endl;
+	
+	return;
+}*/
+
 //Function to take in user inputs and perform error checks
 double get_input(string id)
 {
@@ -304,7 +427,8 @@ double get_input(string id)
 			//...else the input is correct and the error tag is false
 			error=false;
 		}		
-	}while(error==true);
+	}while(true==error); // Safe guard. Write logic statements backwards to avoid typoing "error=true" which
+						  // would otherwise NOT cause the compiler to throw an error
 	
 	return input;
 }
