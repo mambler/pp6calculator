@@ -10,6 +10,8 @@
 #include "input.hpp"
 #include "four_vector.hpp"
 
+//---------CLASS BUILT-INS-------------
+
 //Constructor intialliser(s).
 four_vector::four_vector(){
 	ct=0;
@@ -25,6 +27,16 @@ four_vector::four_vector(double ct_, double x_, double y_, double z_) : ct(ct_),
 four_vector::~four_vector(){
 	std::cout << "Four vector has been deconstructed." << std::endl << std::endl;
 }
+
+//Binary addition operator for two four_vector class objects
+four_vector operator+(const four_vector& lhs, const four_vector& rhs){
+	four_vector temp; //Initialised a blank object
+	temp=lhs;
+	temp+=rhs;
+	return temp;	
+}
+
+//-------------------------------------------
 
 //Set vector components
 void four_vector::setVectorComponents(){	

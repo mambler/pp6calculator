@@ -55,14 +55,6 @@ int main()
 			spacetime_vector(a,b,c,d);
 		} else if(operation == '5'){
 			invariant_mass(a,b,c,d);
-	/*	} else if(operation == '6'){
-			//Take inputs before the function call to demonstrate
-			a = get_input("a");
-			b = get_input("b");
-			sort_function(a,b);
-			cout << "a = " << a << " and b = " << b << endl << endl;*/
-		//} else if(operation == 'T'){
-		//	test_function();
 		} else if(operation == '6') {
 			bubble();
 		} else if(operation == '7') {
