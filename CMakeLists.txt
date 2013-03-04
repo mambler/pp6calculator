@@ -4,7 +4,7 @@ project(pp6calculator)
 
 include_directories(pp6Lib)
 
-add_library(lib SHARED pp6Lib/math.hpp pp6Lib/math.cpp pp6Lib/physics.hpp pp6Lib/physics.cpp pp6Lib/input.hpp pp6Lib/input.cpp)
+add_library(lib SHARED pp6Lib/math.hpp pp6Lib/math.cpp pp6Lib/physics.hpp pp6Lib/physics.cpp pp6Lib/input.hpp pp6Lib/input.cpp pp6Lib/four_vector.hpp pp6Lib/four_vector.cpp)
 
 add_executable(run calc.cpp)
 

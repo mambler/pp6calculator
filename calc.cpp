@@ -25,7 +25,8 @@ int main()
 	while(quit==0){
 		cout << "Calculate: '+' '-' '*' '/'\n1: Quadratic Solver\n\
 2: Length of Three Vector\n3: Straight Line x-axis intercept\n4: Spacetime length calcuation\
-\n5: Invariant mass calculation\n6: Input user defined array and bubble sort\nq: Quit Calculator" << endl << endl;
+\n5: Invariant mass calculation\n6: Input user defined array and bubble sort\n\
+7: Lorentz Boost\nq: Quit Calculator" << endl << endl;
 		cin >> operation;
 		if(operation == '+'){
 			addition(a,b);
@@ -64,6 +65,8 @@ int main()
 		//	test_function();
 		} else if(operation == '6') {
 			bubble();
+		} else if(operation == '7') {
+			lorentz();
 		} else if(operation == 'q') {
 			quit=1;
 		} else {

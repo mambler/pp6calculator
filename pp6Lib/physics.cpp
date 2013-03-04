@@ -7,11 +7,14 @@
 #include <math.h>
 
 #include "physics.hpp"
+#include "four_vector.hpp"
 #include "input.hpp"
 
 //Only using a selection of the entire "namespace std"
 using std::cout;
 using std::endl;
+
+//-------------------------------------------------------------------------
 
 // Calculate the length of the spacetime vector given the Minkowski signature (+,-,-,-)
 void spacetime_vector(double&a,double&b,double&c,double&d)
@@ -70,6 +73,32 @@ void invariant_mass(double&a,double&b,double&c,double&d)
 	
 	//Compute invariant mass and output to screen
 	cout << "m0 = " << sqrt(m0) << endl << endl;	
+	
+	return;
+}
+
+//-------------------------------------------------------------------------
+
+void lorentz()
+{
+	// Implement struct vector here.
+	four_vector vector;
+	// Set values
+	vector.setVectorComponents();	
+	
+	double v;
+	
+	do{
+		v = get_input("v");
+	}while(v>=1 || v<0);
+	
+	cout << endl << "Original vector: " << "[" << vector.get_ct() << "," << vector.get_x() << "," << vector.get_y() << "," << vector.get_z() << "]" << endl;
+	
+	//Calculate the Lorentz boost
+	vector.boost_z(v);
+	
+	cout << "Boosted vector: " << "[" << vector.get_ct() << "," << vector.get_x() << "," << vector.get_y() << "," << vector.get_z() << "]" << endl;
+	cout << "Spacetime interval: " << vector.interval() << endl;
 	
 	return;
 }

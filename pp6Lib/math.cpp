@@ -183,7 +183,7 @@ void bubble()
 		convert << i;		  // throw i into the string stream "convert"
 		element_value = get_input(convert.str());  //now call object "str()" from string stream on "convert" to convert
 												   // the string stream to a string
-		ptr_array[i]=element_value;				   // value of pointer "ptr_array" at address [i]; being assigned here
+		ptr_array[i]=int(element_value);		   // value of pointer "ptr_array" at address [i]; being assigned here
 	}
 	
 	cout << "Original array arrangement: " << endl;
